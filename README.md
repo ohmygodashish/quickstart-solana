@@ -25,7 +25,7 @@ solana --version && solana-keygen --version && spl-token --version
 ```bash
 git clone <your-repo-url>
 cd quickstart-solana
-chmod +x start.sh
+chmod +x run.sh
 ```
 
 ## Usage
@@ -33,7 +33,7 @@ chmod +x start.sh
 Run the setup script:
 
 ```bash
-./start.sh
+./run.sh
 ```
 
 The script is interactive and will ask whether you want to:
