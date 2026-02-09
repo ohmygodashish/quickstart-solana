@@ -104,3 +104,34 @@ if ask_yes_no "Request 2 SOL airdrop to this wallet on devnet (recommended for f
   solana airdrop 2 "$WALLET_PUBKEY" --url "$DEVNET_URL" || true
   solana balance "$WALLET_PUBKEY" --url "$DEVNET_URL" || true
 fi
+
+if $DO_TOKEN; then
+  echo ""
+  echo "Creating token on devnet..."
+
+  TOKEN_OUTPUT="$(
+    spl-token \
+      --url "$DEVNET_URL" \
+      --owner "$WALLET_PATH" \
+      --fee-payer "$WALLET_PATH" \
+      create-token
+  )"
+
+  echo "$TOKEN_OUTPUT"
+
+  TOKEN_MINT="$(parse_value "Creating token" "$TOKEN_OUTPUT")"
+  if [[ -z "$TOKEN_MINT" ]]; then
+    echo "Error: Could not parse token mint address from output."
+    exit 1
+  fi
+
+  echo "Token mint address: $TOKEN_MINT"
+fi
+
+if ! $DO_TOKEN && { $DO_ACCOUNT || $DO_MINT; }; then
+  read -r -p "Enter existing token mint address: " TOKEN_MINT
+  if [[ -z "$TOKEN_MINT" ]]; then
+    echo "Error: Token mint address is required."
+    exit 1
+  fi
+fi
