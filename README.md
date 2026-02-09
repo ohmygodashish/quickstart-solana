@@ -23,7 +23,7 @@ solana --version && solana-keygen --version && spl-token --version
 ## Installation
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/ohmygodashish/quickstart-solana.git
 cd quickstart-solana
 chmod +x run.sh
 ```
