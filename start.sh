@@ -188,3 +188,6 @@ fi
 echo ""
 echo "Done."
 echo "Wallet keypair: $WALLET_PATH"
+
+[[ -n "$TOKEN_MINT" ]] && echo "Token mint: $TOKEN_MINT"
+[[ -n "$TOKEN_ACCOUNT" ]] && echo "Token account: $TOKEN_ACCOUNT"
