@@ -24,3 +24,11 @@ ask_yes_no() {
 
   [[ "$input" =~ ^[Yy]$ ]]
 }
+
+require_cmd() {
+    local cmd="$1"
+    
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "Error: '$cmd' is not installed or not in PATH."
+    fi
+}
