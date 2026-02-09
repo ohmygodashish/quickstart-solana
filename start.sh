@@ -135,3 +135,26 @@ if ! $DO_TOKEN && { $DO_ACCOUNT || $DO_MINT; }; then
     exit 1
   fi
 fi
+
+if $DO_ACCOUNT; then
+  echo ""
+  echo "Creating token account for mint: $TOKEN_MINT"
+
+  ACCOUNT_OUTPUT="$(
+    spl-token \
+      --url "$DEVNET_URL" \
+      --owner "$WALLET_PATH" \
+      --fee-payer "$WALLET_PATH" \
+      create-account "$TOKEN_MINT"
+  )"
+
+  echo "$ACCOUNT_OUTPUT"
+
+  TOKEN_ACCOUNT="$(parse_value "Creating account" "$ACCOUNT_OUTPUT")"
+  if [[ -z "$TOKEN_ACCOUNT" ]]; then
+    echo "Error: Could not parse token account address from output."
+    exit 1
+  fi
+
+  echo "Token account address: $TOKEN_ACCOUNT"
+fi
