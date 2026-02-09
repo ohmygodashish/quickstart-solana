@@ -30,5 +30,6 @@ require_cmd() {
     
     if ! command -v "$cmd" >/dev/null 2>&1; then
     echo "Error: '$cmd' is not installed or not in PATH."
+    exit 1
     fi
 }
