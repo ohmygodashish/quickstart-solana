@@ -40,3 +40,13 @@ parse_value() {
   local output="$2"
   echo "$output" | awk -v lbl="$label" '$0 ~ lbl {print $3; exit}'
 }
+
+echo ""
+echo "=============================================="
+echo " Solana Token Setup (Devnet) "
+echo "=============================================="
+
+require_cmd solana-keygen
+require_cmd solana
+require_cmd spl-token
+
