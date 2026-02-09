@@ -33,3 +33,10 @@ require_cmd() {
     exit 1
     fi
 }
+
+parse_value() {
+  # Usage: parse_value "Creating token" "$output"
+  local label="$1"
+  local output="$2"
+  echo "$output" | awk -v lbl="$label" '$0 ~ lbl {print $3; exit}'
+}
