@@ -73,3 +73,34 @@ fi
 if ask_yes_no "4) Mint token(s)?" "N"; then
   DO_MINT=true
 fi
+
+if ! $DO_WALLET; then
+  read -r -p "Enter wallet keypair path (default: ~/.config/solana/id.json): " WALLET_PATH
+  WALLET_PATH="${WALLET_PATH:-$HOME/.config/solana/id.json}"
+
+  if [[ ! -f "$WALLET_PATH" ]]; then
+    echo "Error: Wallet file not found at '$WALLET_PATH'"
+    exit 1
+  fi
+fi
+
+if $DO_WALLET; then
+  read -r -p "Enter wallet output path (default: $DEFAULT_WALLET): " WALLET_PATH
+  WALLET_PATH="${WALLET_PATH:-$DEFAULT_WALLET}"
+
+  echo ""
+  echo "Generating wallet..."
+  solana-keygen new \
+    --outfile "$WALLET_PATH" \
+    --force \
+    --no-bip39-passphrase
+fi
+
+WALLET_PUBKEY="$(solana-keygen pubkey "$WALLET_PATH")"
+echo "Using wallet: $WALLET_PATH"
+echo "Wallet pubkey: $WALLET_PUBKEY"
+
+if ask_yes_no "Request 2 SOL airdrop to this wallet on devnet (recommended for fees)?" "Y"; then
+  solana airdrop 2 "$WALLET_PUBKEY" --url "$DEVNET_URL" || true
+  solana balance "$WALLET_PUBKEY" --url "$DEVNET_URL" || true
+fi
