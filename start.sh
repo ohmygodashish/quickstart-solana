@@ -158,3 +158,33 @@ if $DO_ACCOUNT; then
 
   echo "Token account address: $TOKEN_ACCOUNT"
 fi
+
+if $DO_MINT; then
+  echo ""
+
+  if [[ -z "$TOKEN_ACCOUNT" ]]; then
+    read -r -p "Enter destination token account address: " TOKEN_ACCOUNT
+    if [[ -z "$TOKEN_ACCOUNT" ]]; then
+      echo "Error: Destination token account is required to mint."
+      exit 1
+    fi
+  fi
+
+  read -r -p "Enter mint quantity: " MINT_QTY
+  if [[ ! "$MINT_QTY" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+    echo "Error: Invalid quantity '$MINT_QTY'"
+    exit 1
+  fi
+
+  echo "Minting $MINT_QTY token(s)..."
+
+  spl-token \
+    --url "$DEVNET_URL" \
+    --owner "$WALLET_PATH" \
+    --fee-payer "$WALLET_PATH" \
+    mint "$TOKEN_MINT" "$MINT_QTY" "$TOKEN_ACCOUNT"
+fi
+
+echo ""
+echo "Done."
+echo "Wallet keypair: $WALLET_PATH"
