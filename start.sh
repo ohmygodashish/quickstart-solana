@@ -50,3 +50,26 @@ require_cmd solana-keygen
 require_cmd solana
 require_cmd spl-token
 
+echo ""
+echo "What would you like to do?"
+
+DO_WALLET=false
+DO_TOKEN=false
+DO_ACCOUNT=false
+DO_MINT=false
+
+if ask_yes_no "1) Generate a new wallet with solana-keygen?" "Y"; then
+  DO_WALLET=true
+fi
+
+if ask_yes_no "2) Create a new token on devnet?" "Y"; then
+  DO_TOKEN=true
+fi
+
+if ask_yes_no "3) Create a token account on devnet?" "Y"; then
+  DO_ACCOUNT=true
+fi
+
+if ask_yes_no "4) Mint token(s)?" "N"; then
+  DO_MINT=true
+fi
